@@ -5,7 +5,7 @@ import tensorflow as tf
 import cv2
 
 # Load pre-trained model
-model = tf.keras.models.load_model(r'C:\Users\HP\Documents\Speech_processing_project\model_complex.h5')
+model = tf.keras.models.load_model(r'https://drive.google.com/file/d/1mfAqTCC5BfPA44_DxRprDgJxpG8cbTr-/view?usp=sharing')
 
 # Define emotion classes
 emotions = ['Surprised', 'Disgust', 'Fearful', 'Angry', 'Sad', 'Happy', 'Calm', 'Neutral']
