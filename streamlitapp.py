@@ -3,9 +3,21 @@ import numpy as np
 import librosa
 import tensorflow as tf
 import cv2
+import gdown
+import os
+
+# Define the URL of the model on Google Drive
+model_url = 'https://drive.google.com/uc?id=1mfAqTCC5BfPA44_DxRprDgJxpG8cbTr-'
+
+# Define the path to save the downloaded model
+model_path = 'emotion_model.h5'
+
+# Download the model if it's not already present
+if not os.path.exists(model_path):
+    gdown.download(model_url, model_path, quiet=False)
 
 # Load pre-trained model
-model = tf.keras.models.load_model(r'https://drive.google.com/file/d/1mfAqTCC5BfPA44_DxRprDgJxpG8cbTr-/view?usp=sharing')
+model = tf.keras.models.load_model(model_path)
 
 # Define emotion classes
 emotions = ['Surprised', 'Disgust', 'Fearful', 'Angry', 'Sad', 'Happy', 'Calm', 'Neutral']
@@ -20,33 +32,6 @@ def extract_features(audio_path):
     S_db_resized = np.expand_dims(S_db_resized, axis=0)
     return S_db_resized
 
-# def extract_features(audio_path):
-#     X_test = np.expand_dims(audio_path, axis=-1)
-#     audio, sample_rate = librosa.load(X_test, sr=None)
-#     S = librosa.feature.melspectrogram(y=audio, sr=sample_rate, n_mels=128, n_fft=2048, hop_length=512)
-#     S_db = librosa.power_to_db(S, ref=np.max)
-#     S_db_resized = np.resize(S_db, (128, 128))
-#     S_db_resized = np.expand_dims(S_db_resized, axis=-1)
-#     S_db_resized = np.expand_dims(S_db_resized, axis=0)
-#     return S_db_resized
-
-
-# def extract_features(filepath, n_fft=2048, hop_length=512):
-#     # Load audio file
-#     X_test = np.expand_dims(filepath, axis=-1)
-
-#     y, sr = librosa.load(X_test, sr=None)
-#     # Convert audio to a spectrogram
-#     S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
-#     # Convert to logarithmic scale
-#     S_dB = librosa.power_to_db(S, ref=np.max)
-#     # Resize spectrogram to 128x128
-#     S_dB_resized = cv2.resize(S_dB, (128, 128))
-#     # Normalize the spectrogram
-#     S_dB_resized = (S_dB_resized - np.min(S_dB_resized)) / (np.max(S_dB_resized) - np.min(S_dB_resized))
-#     return S_dB_resized
-
-# Streamlit app
 st.set_page_config(page_title="Speech Emotion Classification", page_icon=":notes:", layout="wide")
 
 # Sidebar for navigation
@@ -125,6 +110,7 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
 
 #chouf li kaytpredictaw mzyan w khdem 3lih
 # import streamlit as st
